@@ -70,16 +70,18 @@ Ideal para quem não possui GPU dedicada no computador:
 3. Em uma célula de código, clone o repositório e instale as dependências:
    ```
    !git clone https://github.com/Abrantes-Santos/brain-tumor-classification.git
-   %cd brain-tumor-mri-pytorch
+   %cd brain-tumor-classification
    !pip install -r requirements.txt
+   ```
 4. Monte o Google Drive para apontar suas imagens:
    ```
    from google.colab import drive
    drive.mount('/content/drive')
+   ```
 5. Inicie o treinamento via terminal do Colab:
    ```
    !python -m src.train --data_path "/content/drive/MyDrive/Training" --epochs 40 --batch_size 32
-
+   ```
 ---
 
 ### Opção 2: Executar Localmente (Linux, macOS ou Windows)
