@@ -3,7 +3,7 @@
 [![Python 3.10+](https://img.shields.io/badge/python-3.10+-blue.svg)](https://www.python.org/downloads/)
 [![PyTorch](https://img.shields.io/badge/PyTorch-2.0+-ee4c2c.svg)](https://pytorch.org/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/Abrantes-Santos/brain-tumor-classification/blob/main/notebooks/brain_tumor_classification_demo.ipynb)
 Pipeline modular de Deep Learning construído em PyTorch para detecção e classificação multi-classe de tumores cerebrais a partir de exames de Ressonância Magnética (MRI). O pipeline consome diretamente o dataset público do Kaggle e oferece suporte completo a treinamento e inferência via linha de comando (CLI).
 
 ---
