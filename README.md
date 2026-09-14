@@ -68,7 +68,7 @@ Ideal para quem não possui GPU dedicada no computador:
 1. Abra um novo notebook no Google Colab (https://colab.research.google.com).
 2. Ative a GPU gratuita: **Ambiente de execução > Alterar tipo de ambiente de execução > T4 GPU > Salvar**.
 3. Em uma célula de código, clone o repositório e instale as dependências:
-   !git clone https://github.com/SEU-USUARIO/brain-tumor-mri-pytorch.git
+   !git clone https://github.com/Abrantes-Santos/brain-tumor-classification.git
    %cd brain-tumor-mri-pytorch
    !pip install -r requirements.txt
 4. Monte o Google Drive para apontar suas imagens:
