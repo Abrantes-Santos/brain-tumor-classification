@@ -36,3 +36,23 @@ def get_device() -> torch.device:
         print("[INFO] Dispositivo em uso: CPU")
     return device
 
+
+from typing import List, Optional
+import matplotlib.pyplot as plt
+import numpy as np
+import torch
+
+
+def denormalize(
+    tensor: torch.Tensor,
+    mean: List[float] = [0.485, 0.456, 0.406],
+    std: List[float] = [0.229, 0.224, 0.225]
+) -> np.ndarray:
+    """
+    Reverte a normalização ImageNet aplicada nos tensores para permitir visualização RGB.
+    Espera um tensor com formato (C, H, W).
+    """
+    img = tensor.cpu().detach().numpy().transpose((1, 2, 0))
+    img = np.array(std) * img + np.array(mean)
+    return np.clip(img, 0, 1)
+
