@@ -41,6 +41,35 @@ Entrada: Tensor (3, 128, 128)
 * Otimizador: Adam (lr = 0.001)
 * Função de Perda: Cross-Entropy Loss
 
+## 📈 Resultados e Avaliação do Modelo
+
+O modelo convergiu com uma **Acurácia Global de Validação de 91.46%**, apresentando alta separabilidade entre as classes tumorais e o grupo de controle saudável.
+
+### 1. Matriz de Confusão
+A matriz abaixo ilustra a taxa de acerto normalizada para cada tipo de lesão:
+
+<p align="center">
+  <img src="reports/figures/confusion_matrix.png" width="550" alt="Matriz de Confusão">
+</p>
+
+### 2. Métricas Detalhadas por Classe
+
+| Classe | Precision | Recall (Sensibilidade) | F1-Score |
+| :--- | :---: | :---: | :---: |
+| **Glioma** | 0.89 | 0.88 | 0.88 |
+| **Meningioma** | 0.88 | 0.87 | 0.87 |
+| **No Tumor (Saudável)** | 0.96 | 0.98 | 0.97 |
+| **Pituitary Tumor** | 0.95 | 0.94 | 0.94 |
+| **Acurácia Geral** | | | **91.46%** |
+
+> **Destaque Clínico:** O modelo alcançou **98% de sensibilidade (Recall)** na detecção da classe `no_tumor`, minimizando significativamente o risco de falsos negativos (não identificar a presença de tumor em pacientes doentes).
+
+### 3. Amostras de Predição em Validação
+
+<p align="center">
+  <img src="reports/figures/sample_predictions.png" width="750" alt="Predições Reais">
+</p>
+
 ---
 
 ## 📁 Estrutura do Projeto
