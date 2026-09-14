@@ -4,20 +4,26 @@
 [![PyTorch](https://img.shields.io/badge/PyTorch-2.0+-ee4c2c.svg)](https://pytorch.org/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-Pipeline modular de Deep Learning construído em **PyTorch** para detecção e classificação multi-classe de tumores cerebrais a partir de exames de Ressonância Magnética (MRI). O modelo categoriza os exames em 4 classes clínicas com suporte completo a treinamento e inferência via linha de comando (CLI).
+Pipeline modular de Deep Learning construído em PyTorch para detecção e classificação multi-classe de tumores cerebrais a partir de exames de Ressonância Magnética (MRI). O pipeline consome diretamente o dataset público do Kaggle e oferece suporte completo a treinamento e inferência via linha de comando (CLI).
 
 ---
 
 ## 🎯 Classes Diagnosticadas
 
-* **Glioma (`glioma_tumor`)**
-* **Meningioma (`meningioma_tumor`)**
-* **Adenoma Pituitário (`pituitary_tumor`)**
-* **Sem Tumor / Controle Saudável (`no_tumor`)**
+* Glioma (glioma_tumor)
+* Meningioma (meningioma_tumor)
+* Adenoma Pituitário (pituitary_tumor)
+* Sem Tumor / Controle Saudável (no_tumor)
+
+<p align="center">
+  <img src="reports/figures/dataset_samples.png" width="800" alt="Exemplos de Ressonância por Classe">
+  <br>
+  <em>Exemplos representativos de cada classe obtidos a partir do dataset oficial do Kaggle.</em>
+</p>
 
 ---
 
-## 🏗️ Arquitetura da Rede (`BrainTumorCNN`)
+## 🏗️ Arquitetura da Rede (BrainTumorCNN)
 
 A arquitetura foi projetada para processar tensores normalizados de dimensão (3, 128, 128), utilizando camadas de convolução 2D, Batch Normalization para estabilização de gradientes e regularização por Dropout:
 
@@ -31,17 +37,16 @@ Entrada: Tensor (3, 128, 128)
 ├── Linear(32.768 -> 256) -> ReLU -> Dropout(p=0.4)
 └── Linear(256 -> 4) => Logits de Saída
 
-* **Total de parâmetros treináveis:** ~8,4 milhões
-* **Otimizador:** Adam (lr = 0.001)
-* **Função de Perda:** Cross-Entropy Loss
+* Total de parâmetros treináveis: ~8,4 milhões
+* Otimizador: Adam (lr = 0.001)
+* Função de Perda: Cross-Entropy Loss
 
 ---
 
 ## 📁 Estrutura do Projeto
 
-brain-tumor-mri-pytorch/
+brain-tumor-classification/
 ├── checkpoints/            # Modelos salvos (.pt / .pth - ignorados no git)
-├── data/                   # Diretório de imagens organizado por classes (ignorado no git)
 ├── reports/                # Métricas e curvas geradas
 │   └── figures/
 ├── src/                    # Código-fonte modular
@@ -52,36 +57,43 @@ brain-tumor-mri-pytorch/
 │   ├── train.py            # Pipeline de treino, validação e checkpointing
 │   └── utils.py            # Sementes (seeds), desnormalização e plots
 ├── .gitignore
-├── requirements.txt        # Dependências do projeto
+├── requirements.txt        # Dependências do projeto (inclui kagglehub)
 └── README.md
 
 ---
 
 ## 💻 Guia de Execução Passo a Passo
 
-O repositório foi projetado de forma agnóstica de ambiente. Escolha uma das opções abaixo para rodar os scripts:
+O repositório consome o dataset oficial do Kaggle (sartajbhuvaji/brain-tumor-classification-mri) automaticamente via biblioteca kagglehub, sem necessidade de autenticação manual por arquivo json.
 
-### Opção 1: Executar na Nuvem via Google Colab (Recomendado / Sem Instalação Local)
-
-Ideal para quem não possui GPU dedicada no computador:
+### Opção 1: Executar na Nuvem via Google Colab (Recomendado)
 
 1. Abra um novo notebook no Google Colab (https://colab.research.google.com).
-2. Ative a GPU gratuita: **Ambiente de execução > Alterar tipo de ambiente de execução > T4 GPU > Salvar**.
+2. Ative a GPU gratuita: Ambiente de execução > Alterar tipo de ambiente de execução > T4 GPU > Salvar.
 3. Em uma célula de código, clone o repositório e instale as dependências:
-   ```
-   !git clone https://github.com/Abrantes-Santos/brain-tumor-classification.git
-   %cd brain-tumor-classification
-   !pip install -r requirements.txt
-   ```
-4. Monte o Google Drive para apontar suas imagens:
-   ```
-   from google.colab import drive
-   drive.mount('/content/drive')
-   ```
-5. Inicie o treinamento via terminal do Colab:
-   ```
-   !python -m src.train --data_path "/content/drive/MyDrive/Training" --epochs 40 --batch_size 32
-   ```
+```
+!git clone https://github.com/Abrantes-Santos/brain-tumor-classification.git
+%cd brain-tumor-classification
+!pip install -r requirements.txt kagglehub
+
+```
+4. Baixe o dataset público do Kaggle direto na máquina do Colab:
+
+```
+import kagglehub
+import os
+
+kaggle_path = kagglehub.dataset_download("sartajbhuvaji/brain-tumor-classification-mri")
+data_path = os.path.join(kaggle_path, "Training")
+print(f"Dataset pronto em: {data_path}")
+
+```
+5. Inicie o treinamento:
+
+```
+!python -m src.train --data_path "{data_path}" --epochs 40 --batch_size 32
+
+```
 ---
 
 ### Opção 2: Executar Localmente (Linux, macOS ou Windows)
@@ -91,36 +103,40 @@ Ideal para quem não possui GPU dedicada no computador:
 * Python 3.10+ instalado
 
 #### 2. Clonar o repositório
-git clone https://github.com/SEU-USUARIO/brain-tumor-mri-pytorch.git
-cd brain-tumor-mri-pytorch
 
-#### 3. Criar e ativar um ambiente virtual
-* Linux / macOS:
-  python3 -m venv venv
-  source venv/bin/activate
-* Windows (PowerShell ou Prompt):
-  python -m venv venv
-  .\venv\Scripts\activate
+git clone https://github.com/Abrantes-Santos/brain-tumor-classification.git
+cd brain-tumor-classification
+
+#### 3. Criar e ativar o ambiente virtual
+
+* No Linux / macOS:
+python3 -m venv venv
+source venv/bin/activate
+
+* No Windows (Prompt ou PowerShell):
+python -m venv venv
+.\venv\Scripts\activate
 
 #### 4. Instalar as dependências
-pip install -r requirements.txt
 
-#### 5. Organizar os dados
-Coloque as imagens dentro de uma pasta (ex: data/Training) dividida pelas 4 categorias:
-data/Training/
-├── glioma_tumor/
-├── meningioma_tumor/
-├── no_tumor/
-└── pituitary_tumor/
+pip install -r requirements.txt kagglehub
+
+#### 5. Baixar o dataset do Kaggle
+
+python -c "import kagglehub; path = kagglehub.dataset_download('sartajbhuvaji/brain-tumor-classification-mri'); print('Caminho:', path)"
 
 #### 6. Executar o Treinamento
-python -m src.train --data_path "data/Training" --epochs 40 --batch_size 32 --lr 0.001 --img_size 128 --save_dir "checkpoints"
+
+Substitua <CAMINHO_DO_DATASET> pelo caminho impresso no passo anterior:
+
+python -m src.train --data_path "<CAMINHO_DO_DATASET>/Training" --epochs 40 --batch_size 32 --lr 0.001 --img_size 128 --save_dir "checkpoints"
 
 #### 7. Testar Inferência em uma Imagem Nova
-Para classificar um exame individual:
-python -m src.predict --image_path "data/Training/glioma_tumor/sample.jpg" --checkpoint "checkpoints/best_model.pth"
 
-Exemplo de saída no console:
+python -m src.predict --image_path "<CAMINHO_DO_DATASET>/Testing/glioma_tumor/image(1).jpg" --checkpoint "checkpoints/best_model.pth"
+
+Exemplo de saída no terminal:
+
 --- Resultado da Inferência ---
 Diagnóstico: glioma_tumor
 Confiança  : 97.85%
@@ -135,14 +151,14 @@ Distribuição de Probabilidades:
 
 ## 📊 Pipeline de Transformações (Data Augmentation)
 
-Para evitar overfitting e elevar a capacidade de generalização da CNN, as imagens passam pelas seguintes operações antes do treino:
-1. **Redimensionamento:** Interpolação para 128 x 128 pixels
-2. **Espelhamento Horizontal:** Flip randômico (p=0.5)
-3. **Rotação:** Variação de ± 15°
-4. **Normalização:** Padrão ImageNet (μ=[0.485, 0.456, 0.406], σ=[0.229, 0.224, 0.225])
+Para evitar overfitting e maximizar a acurácia de generalização da CNN, as imagens de treino passam pelas seguintes transformações estocásticas:
+1. Redimensionamento: Interpolação para 128 x 128 pixels
+2. Espelhamento Horizontal: Flip randômico (50% de probabilidade)
+3. Rotação Aleatória: Variação de ate 15 graus
+4. Normalização ImageNet: media=[0.485, 0.456, 0.406] e desvio_padrao=[0.229, 0.224, 0.225]
 
 ---
 
 ## 📜 Licença
 
-Distribuído sob a licença **MIT**. Consulte o arquivo `LICENSE` para mais detalhes.
+Distribuído sob a licença MIT. Consulte o arquivo LICENSE para mais detalhes.
