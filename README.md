@@ -26,7 +26,7 @@ Pipeline modular de Deep Learning construído em PyTorch para detecção e class
 ## 🏗️ Arquitetura da Rede (BrainTumorCNN)
 
 A arquitetura foi projetada para processar tensores normalizados de dimensão (3, 128, 128), utilizando camadas de convolução 2D, Batch Normalization para estabilização de gradientes e regularização por Dropout:
-
+```
 Entrada: Tensor (3, 128, 128)
 │
 ├── [Bloco Conv 1]: Conv2d(3 -> 32, k=3, p=1) -> BatchNorm2d -> ReLU -> MaxPool2d(2, 2)  => (32, 64, 64)
@@ -36,7 +36,7 @@ Entrada: Tensor (3, 128, 128)
 ├── [Classificador]: Flatten() => Vetor denso de 32.768 dimensões
 ├── Linear(32.768 -> 256) -> ReLU -> Dropout(p=0.4)
 └── Linear(256 -> 4) => Logits de Saída
-
+```
 * Total de parâmetros treináveis: ~8,4 milhões
 * Otimizador: Adam (lr = 0.001)
 * Função de Perda: Cross-Entropy Loss
@@ -73,7 +73,7 @@ A matriz abaixo ilustra a taxa de acerto normalizada para cada tipo de lesão:
 ---
 
 ## 📁 Estrutura do Projeto
-
+```
 brain-tumor-classification/
 ├── checkpoints/            # Modelos salvos (.pt / .pth - ignorados no git)
 ├── reports/                # Métricas e curvas geradas
@@ -88,6 +88,7 @@ brain-tumor-classification/
 ├── .gitignore
 ├── requirements.txt        # Dependências do projeto (inclui kagglehub)
 └── README.md
+```
 
 ---
 
