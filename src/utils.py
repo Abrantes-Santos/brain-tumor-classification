@@ -56,3 +56,45 @@ def denormalize(
     img = np.array(std) * img + np.array(mean)
     return np.clip(img, 0, 1)
 
+
+def plot_batch_samples(
+    dataloader: torch.utils.data.DataLoader,
+    class_names: List[str],
+    num_samples: int = 8,
+    save_path: Optional[str] = None
+) -> None:
+    """
+    Gera um grid com amostras do DataLoader, exibindo a imagem desnormalizada
+    e seu respectivo rótulo de classe. Opcionalmente salva a figura em disco.
+    """
+    images, labels = next(iter(dataloader))
+    num_samples = min(num_samples, len(images))
+    
+    cols = 4
+    rows = (num_samples + cols - 1) // cols
+    
+    fig, axes = plt.subplots(rows, cols, figsize=(14, 3.5 * rows))
+    fig.suptitle("Brain MRI - Amostras do Dataset", fontsize=14, fontweight="bold")
+    
+    # Garante que axes seja iterável como array 2D
+    if rows == 1:
+        axes = np.array([axes])
+        
+    for i in range(rows * cols):
+        r, c = i // cols, i % cols
+        ax = axes[r, c]
+        
+        if i < num_samples:
+            ax.imshow(denormalize(images[i]))
+            label_name = class_names[labels[i].item()]
+            ax.set_title(f"Classe: {label_name}", fontsize=10)
+        ax.axis("off")
+
+    plt.tight_layout()
+    
+    if save_path:
+        plt.savefig(save_path, bbox_inches="tight", dpi=150)
+        print(f"[INFO] Gráfico salvo em: {save_path}")
+        
+    plt.show()
+
