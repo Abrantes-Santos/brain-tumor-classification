@@ -1,4 +1,5 @@
 # Brain MRI Tumor Classification with Deep Learning (PyTorch)
+Classificação de Tumor Cerebral em MRI com Deep Learning (PyTorch)
 
 [![Python 3.10+](https://img.shields.io/badge/python-3.10+-blue.svg)](https://www.python.org/downloads/)
 [![PyTorch](https://img.shields.io/badge/PyTorch-2.0+-ee4c2c.svg)](https://pytorch.org/)
