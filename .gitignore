@@ -214,5 +214,11 @@ marimo/_static/
 marimo/_lsp/
 __marimo__/
 
+# Checkpoints e pesos de modelos
+checkpoints/
+models/
+*.pt
+*.pth
+
 # Streamlit
 .streamlit/secrets.toml
