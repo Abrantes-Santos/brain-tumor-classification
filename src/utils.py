@@ -98,3 +98,46 @@ def plot_batch_samples(
         
     plt.show()
 
+
+
+def plot_learning_curves(
+    history: dict, 
+    save_path: Optional[str] = "reports/figures/learning_curves.png"
+) -> None:
+    """
+    Plota as curvas de perda (Loss) e acurácia (Accuracy) para treino e validação.
+    Salva opcionalmente o gráfico no diretório especificado.
+    """
+    epochs = len(history["train_loss"])
+    epoch_range = range(1, epochs + 1)
+
+    fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(14, 5))
+    fig.suptitle("Desempenho do Modelo - BrainTumorCNN", fontsize=14, fontweight="bold")
+
+    # Curva de Perda (CrossEntropy Loss)
+    ax1.plot(epoch_range, history["train_loss"], label="Treino Loss", marker="o", color="#0A345D")
+    ax1.plot(epoch_range, history["val_loss"], label="Validação Loss", marker="s", color="#FF7043")
+    ax1.set_title("Curva de Perda (Loss)")
+    ax1.set_xlabel("Época")
+    ax1.set_ylabel("CrossEntropy Loss")
+    ax1.legend()
+    ax1.grid(True, alpha=0.3)
+
+    # Curva de Acurácia (%)
+    ax2.plot(epoch_range, history["train_acc"], label="Treino Acc (%)", marker="o", color="#1BB5D8")
+    ax2.plot(epoch_range, history["val_acc"], label="Validação Acc (%)", marker="s", color="#7CB342")
+    ax2.set_title("Curva de Acurácia (%)")
+    ax2.set_xlabel("Época")
+    ax2.set_ylabel("Acurácia (%)")
+    ax2.legend()
+    ax2.grid(True, alpha=0.3)
+
+    plt.tight_layout()
+
+    if save_path:
+        os.makedirs(os.path.dirname(save_path), exist_ok=True)
+        plt.savefig(save_path, bbox_inches="tight", dpi=150)
+        print(f"[INFO] Gráfico de curvas salvo em: {save_path}")
+
+    plt.show()
+
